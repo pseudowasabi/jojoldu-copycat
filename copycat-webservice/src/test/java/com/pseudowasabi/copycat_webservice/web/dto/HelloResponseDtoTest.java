@@ -31,7 +31,7 @@ class HelloResponseDtoTest {
         HelloResponseDto helloResponseDto =  new HelloResponseDto(name, age);
 
         // then
-        org.junit.jupiter.api.Assertions.assertEquals(helloResponseDto.getName(), name);
-        org.junit.jupiter.api.Assertions.assertEquals(helloResponseDto.getAge(), age);
+        org.junit.jupiter.api.Assertions.assertEquals(name, helloResponseDto.getName());
+        org.junit.jupiter.api.Assertions.assertEquals(age, helloResponseDto.getAge());
     }
 }
