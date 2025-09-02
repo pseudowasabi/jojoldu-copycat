@@ -1,13 +1,12 @@
 package com.pseudowasabi.copycat_webservice.domain.posts;
 
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.List;
-
-import static org.springframework.test.util.AssertionErrors.assertEquals;
 
 //@RunWith(SpringRunner.class) // this is for junit4
 //@ExtendWith(SpringExtension.class) // this is for junit5, but included in @SpringBootTest
@@ -40,6 +39,7 @@ class PostsRepositoryTest {
 
         // then
         Posts posts = postsList.get(0);
-        assertEquals()
+        Assertions.assertEquals(title, posts.getTitle());
+        Assertions.assertEquals(content, posts.getContent());
     }
 }
