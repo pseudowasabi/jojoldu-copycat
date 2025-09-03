@@ -27,11 +27,12 @@ class PostsRepositoryTest {
         // given
         String title = "테스트 게시글";
         String content = "테스트 내용물";
+        String author = "pseudowasabi@kakao.com";
 
         postsRepository.save(Posts.builder()
                         .title(title)
                         .content(content)
-                        .author("pseudowasabi@kakao.com")
+                        .author(author)
                         .build());
 
         // when
