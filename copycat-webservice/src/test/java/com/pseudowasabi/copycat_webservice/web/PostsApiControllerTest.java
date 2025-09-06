@@ -2,6 +2,7 @@ package com.pseudowasabi.copycat_webservice.web;
 
 import com.pseudowasabi.copycat_webservice.domain.posts.Posts;
 import com.pseudowasabi.copycat_webservice.domain.posts.PostsRepository;
+import com.pseudowasabi.copycat_webservice.web.dto.PostsResponseDto;
 import com.pseudowasabi.copycat_webservice.web.dto.PostsSaveRequestDto;
 import com.pseudowasabi.copycat_webservice.web.dto.PostsUpdateRequestDto;
 import org.junit.jupiter.api.AfterEach;
@@ -104,5 +105,53 @@ class PostsApiControllerTest {
         assertThat(postsList.get().getTitle()).isEqualTo(modifiedTitle);
         assertThat(postsList.get().getContent()).isEqualTo(modifiedContent);
         assertThat(postsList.get().getAuthor()).isEqualTo(author);
+    }
+
+    @Test
+    void Posts는_조회된다() {
+
+        // given
+        String title1 = "first title";
+        String content1 = "first content";
+        String author1 = "pseudowasabi@kakao.com";
+
+        Posts savedPost1 = postsRepository.save(Posts.builder()
+                .title(title1)
+                .content(content1)
+                .author(author1)
+                .build());
+
+        Long postId1 = savedPost1.getId();
+
+        String title2 = "second title";
+        String content2 = "second content";
+        String author2 = "ringoxcoffee@naver.com";
+
+        Posts savedPost2 = postsRepository.save(Posts.builder()
+                .title(title2)
+                .content(content2)
+                .author(author2)
+                .build());
+
+        Long postId2 = savedPost2.getId();
+
+        String uri1 = "http://localhost:" + port + "/api/v1/posts/" + postId1;
+        String uri2 = "http://localhost:" + port + "/api/v1/posts/" + postId2;
+
+        // when
+        ResponseEntity<PostsResponseDto> responseEntity1 = testRestTemplate.getForEntity(uri1, PostsResponseDto.class);
+        ResponseEntity<PostsResponseDto> responseEntity2 = testRestTemplate.getForEntity(uri2, PostsResponseDto.class);
+
+        // then
+        assertThat(responseEntity1.getStatusCode()).isEqualTo(HttpStatus.OK);
+        assertThat(responseEntity2.getStatusCode()).isEqualTo(HttpStatus.OK);
+
+        assertThat(responseEntity1.getBody().getTitle()).isEqualTo(title1);
+        assertThat(responseEntity1.getBody().getContent()).isEqualTo(content1);
+        assertThat(responseEntity1.getBody().getAuthor()).isEqualTo(author1);
+
+        assertThat(responseEntity2.getBody().getTitle()).isEqualTo(title2);
+        assertThat(responseEntity2.getBody().getContent()).isEqualTo(content2);
+        assertThat(responseEntity2.getBody().getAuthor()).isEqualTo(author2);
     }
 }
