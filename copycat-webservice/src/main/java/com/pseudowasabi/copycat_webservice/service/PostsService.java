@@ -2,12 +2,16 @@ package com.pseudowasabi.copycat_webservice.service;
 
 import com.pseudowasabi.copycat_webservice.domain.posts.Posts;
 import com.pseudowasabi.copycat_webservice.domain.posts.PostsRepository;
+import com.pseudowasabi.copycat_webservice.web.dto.PostsListResponseDto;
 import com.pseudowasabi.copycat_webservice.web.dto.PostsResponseDto;
 import com.pseudowasabi.copycat_webservice.web.dto.PostsSaveRequestDto;
 import com.pseudowasabi.copycat_webservice.web.dto.PostsUpdateRequestDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
@@ -39,5 +43,14 @@ public class PostsService {
         );
 
         return new PostsResponseDto(posts);
+    }
+
+    @Transactional(readOnly = true) // improve retrieve time
+    public List<PostsListResponseDto> findAllDesc() {
+        return postsRepository.findAllDesc().stream()
+                .map(PostsListResponseDto::new)
+                // equivalent to below expression
+//                .map(posts -> new PostsListResponseDto(posts))
+                .collect(Collectors.toList());
     }
 }
