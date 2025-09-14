@@ -1,6 +1,6 @@
 package com.pseudowasabi.copycat_webservice.config.auth.dto;
 
-import com.pseudowasabi.copycat_webservice.domain.user.User;
+import com.pseudowasabi.copycat_webservice.domain.user.Users;
 import lombok.Getter;
 
 import java.io.Serializable;
@@ -9,14 +9,14 @@ import java.io.Serializable;
 /**
  * Separate SessionUser from User to ensure serializable attribute
  */
-public class SessionUser implements Serializable {
+public class SessionUsers implements Serializable {
     private String name;
     private String email;
     private String picture;
 
-    public SessionUser(User user) {
-        this.name = user.getName();
-        this.email = user.getEmail();
-        this.picture = user.getPicture();
+    public SessionUsers(Users users) {
+        this.name = users.getName();
+        this.email = users.getEmail();
+        this.picture = users.getPicture();
     }
 }

@@ -1,8 +1,8 @@
 package com.pseudowasabi.copycat_webservice.config.auth;
 
 import com.pseudowasabi.copycat_webservice.config.auth.dto.OAuthAttributes;
-import com.pseudowasabi.copycat_webservice.config.auth.dto.SessionUser;
-import com.pseudowasabi.copycat_webservice.domain.user.User;
+import com.pseudowasabi.copycat_webservice.config.auth.dto.SessionUsers;
+import com.pseudowasabi.copycat_webservice.domain.user.Users;
 import com.pseudowasabi.copycat_webservice.domain.user.UserRepository;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
@@ -43,22 +43,22 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
 
         OAuthAttributes oAuthAttributes = OAuthAttributes.of(registrationId, userNameAttributeName, oAuth2User.getAttributes());
 
-        User user = saveOrUpdate(oAuthAttributes);
+        Users users = saveOrUpdate(oAuthAttributes);
 
-        httpSession.setAttribute("user", new SessionUser(user));
+        httpSession.setAttribute("user", new SessionUsers(users));
 
         return new DefaultOAuth2User(
-                Collections.singleton(new SimpleGrantedAuthority(user.getRoleKey())),
+                Collections.singleton(new SimpleGrantedAuthority(users.getRoleKey())),
                 oAuthAttributes.getAttributes(),
                 oAuthAttributes.getNameAttributeKey()
         );
     }
 
-    private User saveOrUpdate(OAuthAttributes oAuthAttributes) {
-        User user = userRepository.findByEmail(oAuthAttributes.getEmail())
+    private Users saveOrUpdate(OAuthAttributes oAuthAttributes) {
+        Users users = userRepository.findByEmail(oAuthAttributes.getEmail())
                 .map(entity -> entity.update(oAuthAttributes.getName(), oAuthAttributes.getPicture()))
                 .orElse(oAuthAttributes.toEntity());
 
-        return userRepository.save(user);
+        return userRepository.save(users);
     }
 }

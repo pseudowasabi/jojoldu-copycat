@@ -1,6 +1,6 @@
 package com.pseudowasabi.copycat_webservice.web;
 
-import com.pseudowasabi.copycat_webservice.config.auth.dto.SessionUser;
+import com.pseudowasabi.copycat_webservice.config.auth.dto.SessionUsers;
 import com.pseudowasabi.copycat_webservice.service.PostsService;
 import com.pseudowasabi.copycat_webservice.web.dto.PostsResponseDto;
 import jakarta.servlet.http.HttpSession;
@@ -21,9 +21,9 @@ public class IndexController {
     public String index(Model model) {
         model.addAttribute("posts", postsService.findAllDesc());
 
-        SessionUser sessionUser = (SessionUser) httpSession.getAttribute("user");
-        if (sessionUser != null) {
-            model.addAttribute("userName", sessionUser.getName());
+        SessionUsers sessionUsers = (SessionUsers) httpSession.getAttribute("user");
+        if (sessionUsers != null) {
+            model.addAttribute("userName", sessionUsers.getName());
         }
 
         return "index";
