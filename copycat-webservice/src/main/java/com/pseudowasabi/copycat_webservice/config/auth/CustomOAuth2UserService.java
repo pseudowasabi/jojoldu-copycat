@@ -3,7 +3,7 @@ package com.pseudowasabi.copycat_webservice.config.auth;
 import com.pseudowasabi.copycat_webservice.config.auth.dto.OAuthAttributes;
 import com.pseudowasabi.copycat_webservice.config.auth.dto.SessionUsers;
 import com.pseudowasabi.copycat_webservice.domain.user.Users;
-import com.pseudowasabi.copycat_webservice.domain.user.UserRepository;
+import com.pseudowasabi.copycat_webservice.domain.user.UsersRepository;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -21,7 +21,7 @@ import java.util.Collections;
 @Service
 public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequest, OAuth2User> {
 
-    private final UserRepository userRepository;
+    private final UsersRepository usersRepository;
     private final HttpSession httpSession;
 
     @Override
@@ -55,10 +55,10 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
     }
 
     private Users saveOrUpdate(OAuthAttributes oAuthAttributes) {
-        Users users = userRepository.findByEmail(oAuthAttributes.getEmail())
+        Users users = usersRepository.findByEmail(oAuthAttributes.getEmail())
                 .map(entity -> entity.update(oAuthAttributes.getName(), oAuthAttributes.getPicture()))
                 .orElse(oAuthAttributes.toEntity());
 
-        return userRepository.save(users);
+        return usersRepository.save(users);
     }
 }
