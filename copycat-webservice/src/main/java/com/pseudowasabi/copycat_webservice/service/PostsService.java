@@ -28,7 +28,7 @@ public class PostsService {
     public Long update(Long id, PostsUpdateRequestDto postsUpdateRequestDto) {
 
         Posts posts = postsRepository.findById(id).orElseThrow(
-                () -> new IllegalArgumentException("해당 게시글을 찾을 수 없습니다. (id=" + id + ")")
+                () -> new IllegalArgumentException("The post could not be found. (id=" + id + ")")
         );
 
         posts.update(postsUpdateRequestDto.getTitle(), postsUpdateRequestDto.getContent());
@@ -39,7 +39,7 @@ public class PostsService {
     public PostsResponseDto findById(Long id) {
 
         Posts posts = postsRepository.findById(id).orElseThrow(
-                () -> new IllegalArgumentException("해당 게시글을 찾을 수 없습니다. (id=" + id + ")")
+                () -> new IllegalArgumentException("The post could not be found. (id=" + id + ")")
         );
 
         return new PostsResponseDto(posts);
@@ -52,5 +52,13 @@ public class PostsService {
                 // equivalent to below expression
 //                .map(posts -> new PostsListResponseDto(posts))
                 .collect(Collectors.toList());
+    }
+
+    @Transactional
+    public void delete(Long id) {
+        Posts posts = postsRepository.findById(id).orElseThrow(
+                () -> new IllegalArgumentException("The post could not be found. (id=" + id + ")")
+        );
+        postsRepository.delete(posts);
     }
 }
