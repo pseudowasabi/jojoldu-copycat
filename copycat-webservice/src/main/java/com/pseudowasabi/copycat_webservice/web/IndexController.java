@@ -1,9 +1,9 @@
 package com.pseudowasabi.copycat_webservice.web;
 
+import com.pseudowasabi.copycat_webservice.config.auth.annotation.LoginUser;
 import com.pseudowasabi.copycat_webservice.config.auth.dto.SessionUsers;
 import com.pseudowasabi.copycat_webservice.service.PostsService;
 import com.pseudowasabi.copycat_webservice.web.dto.PostsResponseDto;
-import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -15,13 +15,11 @@ import org.springframework.web.bind.annotation.PathVariable;
 public class IndexController {
 
     private final PostsService postsService;
-    private final HttpSession httpSession;
 
     @GetMapping("/")
-    public String index(Model model) {
+    public String index(Model model, @LoginUser SessionUsers sessionUsers) {
         model.addAttribute("posts", postsService.findAllDesc());
 
-        SessionUsers sessionUsers = (SessionUsers) httpSession.getAttribute("user");
         if (sessionUsers != null) {
             model.addAttribute("userName", sessionUsers.getName());
             model.addAttribute("userEmail", sessionUsers.getEmail());
