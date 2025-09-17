@@ -1,4 +1,4 @@
 **/.idea
 **/.gradle
 *.iml
-application-oauth.yml
+#application-oauth.yml
